@@ -144,3 +144,7 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# Migration bundles
+*-migration*.tar.gz
+*-migration*.sha256

@@ -1,2 +1,31 @@
-# XMUM-New-Student-Mutual-Support-Platform
-This project aims to help new students complete a series of pre-enrollment preparations, provide them with guidance, and better enable them to smoothly complete the procedures for the start of the semester and embark on a colorful university life.
+# XMUM 新生互助平台
+
+本项目面向厦门大学马来西亚分校（XMUM）新生与家长，提供入学准备、校园生活和办理流程的公开互助导航。页面用于解释、排序和提醒，不承接学校系统的登录、资料上传、审核或付款，也不代表学校官方立场。
+
+## 项目结构
+
+- `xmum/xmum/site/`：网站源码、测试、构建脚本和发布配置。
+- `xmum/xmum/materials/`：内容整理使用的原始资料与辅助脚本，包括 PDF、表格、截图、网页资料和模型比较结果。
+- `xmum/xmum/MIGRATION.md`：资料分类、迁移和本地运行说明。
+
+迁移压缩包及其校验文件已从仓库移除。原始资料集中放在 `materials/`，避免与网站代码混在同一层。
+
+## 本地运行
+
+```bash
+cd xmum/xmum/site
+npm ci
+npm test
+npm run lint
+npm run dev
+```
+
+如需生成可离线打开的单文件版本：
+
+```bash
+npm run test:single-export
+```
+
+## 内容边界
+
+动态日期、费用、签证、入境和联系方式以本人当前系统及最新正式通知为准。原始资料可能包含个人或入学相关信息，不应将其复制到公开页面或未经保护的共享位置。
