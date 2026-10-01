@@ -17,8 +17,9 @@ npm run build
 
 `node_modules`、`dist`、`.vinext`、`.wrangler`、`export-single` 和
 `*.tsbuildinfo` 都是本机依赖或可重建产物，不应从旧电脑复制。迁移到新电脑后，
-在本目录重新执行 `npm ci` 即可按 `package-lock.json` 恢复依赖。项目当前没有
-Git 远程仓库；如不使用便携归档，应先配置私有远程仓库再迁移。
+在本目录重新执行 `npm ci` 即可按 `package-lock.json` 恢复依赖。Git 由仓库根目录的
+外层仓库统一管理，`site/` 没有独立的 Git 历史；请从根目录使用当前 GitHub `origin`
+创建分支、提交和同步，不要在 `site/` 内初始化嵌套仓库。
 
 ## 主要内容
 
