@@ -84,6 +84,7 @@ start_chrome() {
   mkdir -p "$chrome_profile"
   "$chromium_path" \
     --headless=new \
+    --no-sandbox \
     --remote-debugging-port="${cdp_base_url##*:}" \
     --user-data-dir="$chrome_profile" \
     --disable-background-timer-throttling \
