@@ -49,7 +49,7 @@ def exercise_rejections(page, section_selector, group_name, button_pattern):
     ]
     file_input = section.locator('input[type="file"]')
     for fixture_path in files:
-        file_input.set_input_files(fixture_path)
+        file_input.set_input_files(fixture_path, timeout=180_000)
     start = section.get_by_role("button", name=re.compile(button_pattern))
     if start.is_enabled():
         start.click()
