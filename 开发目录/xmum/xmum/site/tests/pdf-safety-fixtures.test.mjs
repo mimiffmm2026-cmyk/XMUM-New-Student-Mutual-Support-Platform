@@ -4,6 +4,7 @@ import { mkdtemp, readFile, rm, stat } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import test from "node:test";
+import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
 import { PDFDict, PDFDocument, PDFName, PDFStream } from "pdf-lib";
 
@@ -15,7 +16,7 @@ test("synthetic adversarial PDFs cover every compression safety gate", async () 
   );
   try {
     await execFileAsync(process.execPath, [
-      new URL("./create-adversarial-pdf-fixtures.mjs", import.meta.url).pathname,
+      fileURLToPath(new URL("./create-adversarial-pdf-fixtures.mjs", import.meta.url)),
       directory,
     ]);
 

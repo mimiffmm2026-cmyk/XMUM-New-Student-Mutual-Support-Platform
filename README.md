@@ -4,16 +4,16 @@
 
 ## 项目结构
 
-- `xmum/xmum/site/`：网站源码、测试、构建脚本和发布配置。
-- `xmum/xmum/materials/`：内容整理使用的原始资料与辅助脚本，包括 PDF、表格、截图、网页资料和模型比较结果。
-- `xmum/xmum/MIGRATION.md`：资料分类、迁移和本地运行说明。
+- `开发目录/xmum/xmum/site/`：网站源码、测试、构建脚本和发布配置。
+- `开发目录/xmum/xmum/materials/`：内容整理使用的原始资料与辅助脚本，包括 PDF、表格、截图、网页资料和模型比较结果。
+- `开发目录/xmum/xmum/MIGRATION.md`：资料分类、迁移和本地运行说明。
 
 迁移压缩包及其校验文件已从仓库移除。原始资料集中放在 `materials/`，避免与网站代码混在同一层。
 
 ## 本地运行
 
 ```bash
-cd xmum/xmum/site
+cd 开发目录/xmum/xmum/site
 npm ci
 npm test
 npm run lint

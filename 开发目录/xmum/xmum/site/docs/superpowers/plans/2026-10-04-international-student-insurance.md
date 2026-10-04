@@ -30,11 +30,11 @@
 ### Task 1: 新增保险主题并更新来源登记
 
 **Files:**
-- Modify: `xmum/xmum/site/app/content.ts`
-- Modify: `xmum/xmum/site/app/page.tsx`
-- Modify: `xmum/xmum/site/docs/release-evidence-register.md`
-- Test: `xmum/xmum/site/tests/rendered-html.test.mjs`
-- Test: `xmum/xmum/site/tests/release-readiness.test.mjs`
+- Modify: `开发目录/xmum/xmum/site/app/content.ts`
+- Modify: `开发目录/xmum/xmum/site/app/page.tsx`
+- Modify: `开发目录/xmum/xmum/site/docs/release-evidence-register.md`
+- Test: `开发目录/xmum/xmum/site/tests/rendered-html.test.mjs`
+- Test: `开发目录/xmum/xmum/site/tests/release-readiness.test.mjs`
 
 **Interfaces:**
 - Consumes: 现有 `CampusLifeTopic` 数据结构与 `campusLifeTopics.map` 渲染。
@@ -66,4 +66,4 @@
 
   Run: `npm run lint`
 
-  Commit: `git add xmum/xmum/site/app/content.ts xmum/xmum/site/app/page.tsx xmum/xmum/site/docs/release-evidence-register.md xmum/xmum/site/tests/rendered-html.test.mjs xmum/xmum/site/tests/release-readiness.test.mjs && git commit -m "feat: add EMGS Etiqa insurance guidance"`
+  Commit: `git add 开发目录/xmum/xmum/site/app/content.ts 开发目录/xmum/xmum/site/app/page.tsx 开发目录/xmum/xmum/site/docs/release-evidence-register.md 开发目录/xmum/xmum/site/tests/rendered-html.test.mjs 开发目录/xmum/xmum/site/tests/release-readiness.test.mjs && git commit -m "feat: add EMGS Etiqa insurance guidance"`

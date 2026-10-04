@@ -156,3 +156,7 @@ vite.config.ts.timestamp-*
 # Migration bundles
 *-migration*.tar.gz
 *-migration*.sha256
+
+# Local monitoring output and independent worktrees
+/监测目录/
+/开发目录/*-worktree-*/
