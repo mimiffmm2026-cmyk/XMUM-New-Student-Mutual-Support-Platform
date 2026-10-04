@@ -10,7 +10,7 @@
     "build": "vinext build",
     "export:single": "npm run build && node scripts/export-single-html.mjs",
     "start": "vinext start",
-    "test": "npm run build && node --experimental-strip-types --test tests/rendered-html.test.mjs tests/release-readiness.test.mjs tests/dining-guide.test.mjs tests/packing-guide.test.mjs tests/download-hint.test.mjs tests/pdf-safety-fixtures.test.mjs tests/worker-image-route.test.mjs",
+    "test": "npm run build && node --experimental-strip-types --test tests/rendered-html.test.mjs tests/release-readiness.test.mjs tests/dining-guide.test.mjs tests/packing-guide.test.mjs tests/accommodation-guide.test.mjs tests/download-hint.test.mjs tests/pdf-safety-fixtures.test.mjs tests/worker-image-route.test.mjs",
     "test:single-export": "npm run export:single && node --test tests/single-html-export.test.mjs",
     "test:single-browser": "node scripts/verify-single-browser.mjs && node scripts/verify-single-compression.mjs",
     "export:packing": "node --experimental-strip-types scripts/export-packing-html.mjs",

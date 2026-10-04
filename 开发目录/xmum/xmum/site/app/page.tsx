@@ -5,6 +5,7 @@ import HealthPdfCompressor from "./HealthPdfCompressor";
 import PassportPdfCompressor from "./PassportPdfCompressor";
 import DiningGuide from "./DiningGuide";
 import PackingGuide from "./PackingGuide";
+import AccommodationGuide from "./AccommodationGuide";
 import {
   campusLifeTopics,
   contactGroups,
@@ -849,6 +850,8 @@ export default function Home() {
           </div>
         </div>
       </details>
+
+      <AccommodationGuide />
 
       <details className="family-budget-section secondary-section" id="family-budget">
         <summary className="section-heading secondary-section-summary">
