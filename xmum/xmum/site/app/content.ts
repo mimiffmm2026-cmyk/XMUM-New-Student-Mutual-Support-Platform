@@ -456,6 +456,28 @@ export const campusLifeTopics: CampusLifeTopic[] = [
     ],
     source: "马来西亚政府 MERS 999、XMUM《SFS Student Handbook 2026》与《MBA Student Handbook 2026》（2026-07-23核对）；XMUM官网校园地图与《厦大马校新手村攻略004｜医疗篇》（厦大马校招办，2025-10-13；文案：郭珂杉、孟祥语、陈桐羽、蔡靖娴；摄影：李慧慈、吴雨琳；责编：吴雨琳；排版：林子人；审校：王怡然）",
   },
+  {
+    id: "international-student-insurance",
+    title: "国际生医疗保险（EMGS·Etiqa）",
+    year: "2026官方核对",
+    status: "需核验",
+    summary: "仅适用于通过 EMGS 选择 Etiqa 且已付款的国际学生；先核对本人承保记录，再按当前保单办理。",
+    referencePoints: [
+      "EMGS 2026官方｜国际学生必须持续持有本地医疗保险；保险可通过 EMGS 或教育机构购买，具体方案与保费须向安排方核对",
+      "EMGS 2026官方｜Etiqa 方案提供 Schedule of Benefits、Panel Hospital、Panel Clinic、Insurance Guide 和理赔表单等资料入口",
+      "EMGS/Etiqa 2026官方福利表｜Plan 2 与 Plan 3 的住院年度最高额度分别为 RM30,000 与 RM50,000，GP 门诊年度上限分别为 RM750 与 RM1,250；以本人当前证书/保单为准",
+      "Etiqa 2025官方指南｜Etiqa+ 的 Healthcare 可绑定 Policy/Contract No，并查看年度额度、病房权益、GL 状态、Panel Providers 和理赔记录；2026 使用前请复核应用与界面",
+      "Etiqa 2025官方指南｜住院/门诊理赔可在 Etiqa+ 提交，指南写明出院后 30 天内上传指定材料；时限和材料仍以当前理赔页面为准",
+    ],
+    reviewPoints: [
+      "当届确认｜“学校统一购买国际学生医疗保险”与“通过 EMGS 选择 Etiqa”是否对应本人届次、承保公司、计划和付款记录；不要把 Etiqa 当作所有国际生默认方案",
+      "当届确认｜保障起止日、Plan 2/Plan 3、自付额、除外责任、非 Panel 就医、政府医院 GL/押金和校内诊所结算方式",
+      "当届确认｜Etiqa+ 当前应用可用性、个人 Policy/Contract No、Panel Clinic/Panel Hospital 名单以及理赔字段和时限",
+      "当届确认｜不公开示例保单号、私人或高风险联系方式、未核验表单、冲突地址/邮箱；讲座整理中的演示值和笔误不构成条款",
+      "当届确认｜正式办理前回到本人 EMGS 门户、学校最新通知和 Etiqa 当前保单核对；本主题只作新生行动清单",
+    ],
+    source: "EMGS《Insurance - New》（2026-10-04核对）；EMGS/Etiqa《Schedule of Benefits》（2026版，2026-10-04核对）；Etiqa《eTiQa+ Mobile App & Admission to Panel Hospital》（2025版，2026-10-04核对）。以本人当前保单、EMGS 门户和校方通知为准。",
+  },
 ];
 
 export const faqCategories = [

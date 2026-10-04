@@ -105,6 +105,16 @@ PDF无加密、无表单、无JavaScript。文件元数据记录为2026-07-22 10
 | 社团 | `../../materials/pdf/厦大马校新手村攻略003丨社团篇（文艺类、综合类、国际交流类）.pdf` | 21 | `eb46d7fc2d0027cb246a208ca421ad12b431e3f30e777a858603a2010330b743` | `../../materials/pdf/content (14).md` | `33009033781430f8587fe00e0d88941d02fc816307c7fc4f8e6af49e731d8d76` |
 | 医疗 | `../../materials/pdf/厦大马校新手村攻略004丨医疗篇.pdf` | 8 | `fae048e62e28bf77fbf1dc7f73f01205ba31a36e03db1c07d90088b3254930ad` | `../../materials/pdf/content (13).md` | `7429f3bcf1c8f986b94693dc2a2923bd6a4d076ed7b7884192bb8f600a548711` |
 
+### 2026 国际生医疗保险（EMGS·Etiqa）
+
+核验日期：2026-10-04。该主题只面向通过 EMGS 选择 Etiqa 且已付款、并能在本人当前记录中确认承保关系的国际学生。
+
+- EMGS “Insurance - New” 页面：核对国际学生必须持有本地医疗保险、保险可通过 EMGS 或教育机构购买，以及 Etiqa 方案资料入口。
+- EMGS/Etiqa《Schedule of Benefits》（2026版）：核对 Plan 2/Plan 3 的公开年度额度和 GP 门诊上限；个人证书、保单版本与自付额仍须逐项复核。
+- Etiqa《eTiQa+ Mobile App & Admission to Panel Hospital》（2025版）：核对 Healthcare 绑定、年度额度、病房权益、GL、Panel Provider 和理赔提交路径；2026 使用前复核应用与界面。
+- 讲座整理稿只用于补充新生行动清单，不作为完整保单；示例保单号、私人或高风险联系方式、未核验表单、冲突地址/邮箱不进入公开页面。
+- 不公开示例保单号、私人或高风险联系方式；保险条款、有效期、Panel 名单和理赔时限以本人当前保单、EMGS 门户和校方通知为准。
+
 ### 行李准备参考（2026-09 新增）
 
 | 项目 | 相对路径 | 大小 | SHA-256 | 证据性质 |

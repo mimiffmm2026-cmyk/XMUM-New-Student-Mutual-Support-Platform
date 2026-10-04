@@ -889,7 +889,7 @@ export default function Home() {
         <summary className="section-heading secondary-section-summary">
           <span className="secondary-section-title">
             <h2>校园生活：先参考经验，再核对当届安排</h2>
-            <p>校园生活参考 · 2025经验 · 校园照片、地图与四份主题整理</p>
+            <p>校园生活参考 · 2025经验 · 校园照片、地图与五份主题整理</p>
           </span>
           <DisclosureAction label="校园参考" />
         </summary>
