@@ -321,6 +321,35 @@ test("server-renders the public non-official new-student guide", async () => {
     "the dorm hard rule must be visible before expanding the topic",
   );
 
+  const insuranceTitleStart = html.indexOf(
+    "<strong>国际生医疗保险（EMGS·Etiqa）</strong>",
+    campusLifeStart,
+  );
+  assert.notEqual(insuranceTitleStart, -1);
+  const insuranceDetailsStart = html.lastIndexOf(
+    '<details class="campus-life-topic"',
+    insuranceTitleStart,
+  );
+  const insuranceSummaryEnd = html.indexOf("</summary>", insuranceTitleStart);
+  const insuranceDetailsEnd = html.indexOf("</details>", insuranceTitleStart);
+  assert.notEqual(insuranceDetailsStart, -1);
+  assert.notEqual(insuranceSummaryEnd, -1);
+  assert.notEqual(insuranceDetailsEnd, -1);
+  const insuranceSummary = html.slice(insuranceDetailsStart, insuranceSummaryEnd);
+  const insuranceDetails = html.slice(insuranceDetailsStart, insuranceDetailsEnd);
+  assert.doesNotMatch(
+    insuranceSummary,
+    /<details[^>]*\bopen(?:\s|=|>)/,
+    "the insurance topic should be collapsed by default",
+  );
+  assert.match(insuranceSummary, /通过 EMGS 选择 Etiqa/);
+  assert.match(insuranceDetails, /学校统一购买国际学生医疗保险/);
+  assert.match(insuranceDetails, /以本人当前保单、EMGS 门户和校方通知为准/);
+  assert.match(insuranceDetails, /Panel Clinic|Panel Provider/);
+  assert.ok(insuranceTitleStart < diningStart, "insurance should stay before dining");
+  assert.match(html, /校园照片、地图与五份主题整理/);
+  assert.match(html, /主体资料最后核对：2026-09-17；国际生医疗保险专题核对：2026-10-04/);
+
   // Timeline urgency is hydrated from the visitor's UTC+8 calendar day. SSR
   // must stay stable instead of baking a date-relative "past due" state.
   assert.doesNotMatch(html, /已截止|已过原定节点/);

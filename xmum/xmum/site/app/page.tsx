@@ -889,7 +889,7 @@ export default function Home() {
         <summary className="section-heading secondary-section-summary">
           <span className="secondary-section-title">
             <h2>校园生活：先参考经验，再核对当届安排</h2>
-            <p>校园生活参考 · 2025经验 · 校园照片、地图与四份主题整理</p>
+            <p>校园生活参考 · 2025经验 · 校园照片、地图与五份主题整理</p>
           </span>
           <DisclosureAction label="校园参考" />
         </summary>
@@ -942,7 +942,7 @@ export default function Home() {
 
         <div className="campus-life-note" role="note">
           <strong>怎样阅读</strong>
-          <p><b>“2025攻略记录”</b>表示内容可以帮助提前了解校园生活；<b>“2026使用前复核”</b>表示价格、日期、政策、机构安排、名单或联系方式仍须以当届校方通知为准。显示不等于已经通过2026校方核验。最后核对：2026-09-17。</p>
+          <p><b>“2025攻略记录”</b>表示内容可以帮助提前了解校园生活；<b>“2026使用前复核”</b>表示价格、日期、政策、机构安排、名单或联系方式仍须以当届校方通知为准。显示不等于已经通过2026校方核验。主体资料最后核对：2026-09-17；国际生医疗保险专题核对：2026-10-04。</p>
         </div>
 
         <div className="campus-life-list">

@@ -79,6 +79,11 @@ test("release evidence register records the verified source without publishing s
     /学生签证批准信VAL必须彩色打印；单次入境签证SEV彩色或黑白均可/,
   );
 
+  assert.match(register, /国际生医疗保险（EMGS·Etiqa）/);
+  assert.match(register, /EMGS.*Insurance - New/s);
+  assert.match(register, /不公开示例保单号、私人或高风险联系方式/);
+  assert.doesNotMatch(register, /TGWH\d+|TOES\d+|THES\d+|TOPW\d+/);
+
   for (const forbidden of [
     /(?:初始密码|默认密码)[^。\n]{0,80}(?:身份证|出生日期|[0-9]{6,})/i,
     /(?:收款账号|银行账号|account\s*number)\s*[:：]?\s*[0-9][0-9 -]{7,}/i,
@@ -202,6 +207,16 @@ test("release output excludes sensitive default credentials and unverified ident
     /(?:params|searchParams)\.get\(["']query["']\)|params\.set\(["']query["']/,
     "已停用的问答搜索文本不得持久化到 URL",
   );
+
+  const insuranceStart = content.indexOf('id: "international-student-insurance"');
+  assert.notEqual(insuranceStart, -1);
+  const insuranceEnd = content.indexOf("\n  },", insuranceStart);
+  assert.notEqual(insuranceEnd, -1);
+  const insuranceBlock = content.slice(insuranceStart, insuranceEnd);
+  assert.match(insuranceBlock, /通过 EMGS 选择 Etiqa/);
+  assert.match(insuranceBlock, /以本人当前保单、EMGS 门户和校方通知为准/);
+  assert.doesNotMatch(insuranceBlock, /TGWH\d+|TOES\d+|THES\d+|TOPW\d+/);
+  assert.doesNotMatch(insuranceBlock, /google\.com|WhatsApp|[\w.-]+@[\w.-]+/i);
 });
 
 test("precise restored guidance remains sourced, qualified, and non-clickable", async () => {
