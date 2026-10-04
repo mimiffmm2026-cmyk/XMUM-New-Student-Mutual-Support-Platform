@@ -35,11 +35,11 @@ function AccommodationCard({ candidate }: { candidate: AccommodationCandidate })
         </div>
         <div>
           <dt>到校口径</dt>
-          <dd>{candidate.distanceNote}</dd>
+          <dd>{candidate.distanceNote} {candidate.distanceMeasurement}</dd>
         </div>
         <div>
           <dt>价格口径</dt>
-          <dd>{candidate.priceNote}</dd>
+          <dd>{candidate.priceNote} 查询日期：{candidate.priceCheckedAt}。{candidate.taxNote}</dd>
         </div>
         <div>
           <dt>入住与取消</dt>
@@ -49,6 +49,10 @@ function AccommodationCard({ candidate }: { candidate: AccommodationCandidate })
 
       <ul className="accommodation-highlights" aria-label={`${candidate.name}可先核对的特点`}>
         {candidate.highlights.map((highlight) => <li key={highlight}>{highlight}</li>)}
+      </ul>
+
+      <ul className="accommodation-notes" aria-label={`${candidate.name}备注`}>
+        {candidate.notes.map((note) => <li key={note}>{note}</li>)}
       </ul>
 
       <p className="accommodation-source">

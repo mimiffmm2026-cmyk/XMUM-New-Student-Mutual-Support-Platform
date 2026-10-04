@@ -2647,6 +2647,14 @@ main {
   line-height: 1.4;
 }
 
+.accommodation-notes {
+  margin: 12px 0 0;
+  padding: 0 0 0 18px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.6;
+}
+
 .accommodation-source {
   margin: 16px 0 0;
   color: var(--subtle);

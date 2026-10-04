@@ -864,10 +864,10 @@ export const faqs: FaqItem[] = [
   },
   {
     question: "家长到学校后住哪里？",
-    answer: "截图说明学校不为家长提供住宿，家长可通过住宿预订平台搜索 Xiamen University Malaysia 附近的宾馆或民宿。",
+    answer: "学校不为家长提供住宿。请展开本页“家长短住与校外住宿候选”模块（#accommodation）查看来源、价格日期和复核口径，再通过本人确认的正式平台自行预订。",
     category: "家长关心",
     audience: "家长",
-    status: "参考",
+    status: "公开来源交叉核对",
     source: "家长住宿资料截图；本页家长短住候选模块（2026-10-05整理）",
     verifiedAt: "2026-10-05",
   },

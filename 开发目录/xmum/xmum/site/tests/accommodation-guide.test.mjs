@@ -43,16 +43,24 @@ test("accommodation candidates carry dated provenance and booking safeguards", (
     assert.ok(candidate.area, `${candidate.id} 缺少区域`);
     assert.ok(candidate.suitableFor, `${candidate.id} 缺少适合人群说明`);
     assert.ok(candidate.distanceNote, `${candidate.id} 缺少距离口径`);
+    assert.ok(candidate.distanceMeasurement, `${candidate.id} 缺少距离测量口径`);
     assert.ok(candidate.priceNote, `${candidate.id} 缺少价格口径`);
     assert.match(candidate.priceNote, /预订前|价格|当前价|MYR/);
+    assert.equal(candidate.priceCheckedAt, "2026-10-05", `${candidate.id} 缺少价格查询日期`);
+    assert.ok(candidate.taxNote, `${candidate.id} 缺少税费口径`);
     assert.ok(candidate.depositCancellation, `${candidate.id} 缺少押金/取消说明`);
     assert.match(candidate.depositCancellation, /押金|取消/);
     assert.ok(candidate.checkInOut, `${candidate.id} 缺少入住时间说明`);
+    assert.ok(candidate.notes.length > 0, `${candidate.id} 缺少备注`);
     assert.ok(candidate.source, `${candidate.id} 缺少来源名称`);
     assert.match(candidate.sourceUrl, /^https:\/\//, `${candidate.id} 来源必须为 HTTPS`);
     assert.match(candidate.verifiedAt, /^2026-10-05$/, `${candidate.id} 核验日期不一致`);
-    assert.equal(candidate.status, "预订前复核");
+    assert.ok(["预订前复核", "仅项目资料，暂不推荐"].includes(candidate.status));
   }
+  assert.equal(
+    accommodationCandidates.find((candidate) => candidate.id === "horizon-suites")?.status,
+    "仅项目资料，暂不推荐",
+  );
 });
 
 test("parent arrival checklist keeps school housing and family stay separate", () => {
@@ -73,7 +81,8 @@ test("parent lodging FAQ has provenance for the new accommodation entry point", 
 
   assert.match(block, /source: "/);
   assert.match(block, /verifiedAt: "2026-10-05"/);
-  assert.match(block, /本页.*住宿|住宿.*本页/);
+  assert.match(block, /公开来源交叉核对/);
+  assert.match(block, /家长短住与校外住宿候选|#accommodation/);
 });
 
 test("packing documentation distinguishes the 54-item source workbook from the 67-item public release", async () => {
@@ -99,6 +108,8 @@ test("server-renders the parent accommodation module without web jumps", async (
   assert.match(html, /S8 Boutique Hotel/);
   assert.match(html, /2026-10-05/);
   assert.match(html, /预订前复核/);
+  assert.match(html, /仅项目资料，暂不推荐/);
+  assert.match(html, /Bell Suites by Salaam/);
   assert.match(html, /学校不为家长提供住宿/);
   assert.doesNotMatch(html, /href=["']https?:\/\//i);
 });
