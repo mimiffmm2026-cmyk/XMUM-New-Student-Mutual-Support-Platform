@@ -1,5 +1,7 @@
 # 行李准备板块（packing guide）实施计划
 
+> **历史设计说明（2026-10-05）：** 本计划记录早期 54 项方案；当前公开实现已扩展为 67 项，本文中的 54 项仅保留为历史决策背景。
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** 在站内「入学时间线」模块内新增可折叠的「行李准备」板块：四问法 + 54 项物品清单（策略分组 + 策略/人群/分类筛选）+ 6 档采购地图 + 三层合规速查 + 首晚提示。

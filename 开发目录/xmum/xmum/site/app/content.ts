@@ -868,6 +868,8 @@ export const faqs: FaqItem[] = [
     category: "家长关心",
     audience: "家长",
     status: "参考",
+    source: "家长住宿资料截图；本页家长短住候选模块（2026-10-05整理）",
+    verifiedAt: "2026-10-05",
   },
   {
     question: "家长怎样向学校了解孩子的情况？",

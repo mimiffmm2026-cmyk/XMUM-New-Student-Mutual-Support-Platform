@@ -1,5 +1,7 @@
 # 行李准备板块设计（packing guide module）
 
+> **历史设计说明（2026-10-05）：** 本规格记录早期 54 项方案；当前公开实现已扩展为 67 项，本文中的 54 项仅保留为历史决策背景。
+
 日期：2026-09-17
 状态：待用户审阅
 来源工作稿：`docs/new-student-packing-guide-distillation.md`、`docs/packing-master-list-v4-distillation.md`
