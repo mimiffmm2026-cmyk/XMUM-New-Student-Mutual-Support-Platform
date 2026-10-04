@@ -1,0 +1,76 @@
+name: Browser CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: xmum/xmum/site
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.13.0
+          cache: npm
+          cache-dependency-path: xmum/xmum/site/package-lock.json
+
+      - name: Install Node.js dependencies
+        run: npm ci
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Python dependencies
+        run: python -m pip install -r tests/requirements-browser.txt
+
+      - name: Install Poppler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y poppler-utils
+
+      - name: Install Playwright Chromium
+        run: python -m playwright install --with-deps chromium
+
+      - name: Print browser regression environment
+        run: |
+          node --version
+          python --version
+          python -m playwright --version
+          python - <<'PY'
+          import subprocess
+          from playwright.sync_api import sync_playwright
+
+          with sync_playwright() as playwright:
+              subprocess.run([playwright.chromium.executable_path, "--version"], check=True)
+          PY
+          pdfinfo -v
+
+      - name: Verify single-file export
+        run: npm run test:single-export
+
+      - name: Run browser regressions
+        run: bash scripts/ci-browser-regressions.sh
+
+      - name: Upload browser failure artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-regression-failure
+          path: ${{ runner.temp }}/browser-artifacts
+          if-no-files-found: warn

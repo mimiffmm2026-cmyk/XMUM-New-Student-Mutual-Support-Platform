@@ -43,50 +43,51 @@ npm run lint
 npm run test:single-export
 ```
 
-单文件的真实交互回归需要先启动一个独立的 Chromium CDP 实例（默认端口
-`9344`，不要使用日常浏览器配置；建议附加
-`--disable-background-timer-throttling --disable-backgrounding-occluded-windows
---disable-renderer-backgrounding`，避免后台标签页节流影响本地压缩），再运行：
+真实浏览器回归需要 Python Playwright、Poppler 和独立的 Chromium。安装依赖后，统一使用
+wrapper 启动临时 CDP 浏览器、开发服务器和合成夹具：
 
 ```bash
-npm run test:single-browser
+npm ci
+python3 -m pip install -r tests/requirements-browser.txt
+python3 -m playwright install chromium
+# Ubuntu runner 可改用：python3 -m playwright install --with-deps chromium
+# macOS 可用 Homebrew 安装 Poppler：brew install poppler
+bash scripts/ci-browser-regressions.sh
 ```
 
-该命令依次执行两个脚本：`verify-single-browser.mjs` 验证页面结构、筛选、图片查看器、
+wrapper 使用默认 CDP 端口 `9344`，启动 Chromium 时使用独立 profile 和
+`--disable-background-timer-throttling --disable-backgrounding-occluded-windows
+--disable-renderer-backgrounding`，每个 Python 回归前都会重启浏览器；失败时的日志、
+截图和成品 PDF 保存在 `$RUNNER_TEMP/browser-artifacts`（本地可通过
+`BROWSER_ARTIFACT_DIR` 指定）。它依次执行四组回归：
+
+- `verify-single-browser.mjs` 和 `verify-single-compression.mjs`：验证页面结构、筛选、图片查看器、
 键盘与触控目标、横向溢出、axe 无障碍与零外部请求；`verify-single-compression.mjs`
 在 `file://` 下以微信 UA 用合成的 26 页护照夹具跑完整压缩链路，断言成品不超过
 2,900,000 字节、微信下载兜底提示出现、无未预期的控制台错误或警告（pdf.js 在
-`file://` 下的 worker 回退提示已显式豁免），且不发起任何网络请求。
+  `file://` 下的 worker 回退提示已显式豁免），且不发起任何网络请求；
+- `tests/passport-compressor-browser.py`：护照压缩及 26 页 Poppler 页面核验；
+- `tests/health-compressor-browser.py`：健康表压缩、文件名保留及 2 页 Poppler 页面核验；
+- `tests/adversarial-pdf-browser.py`：对抗 PDF 拒绝、无下载和取消处理回归。
 
-护照压缩的合成文件回归可额外运行：
-
-```bash
-cdp-bridge.sh
-npm run dev -- --port 4173
-node tests/create-passport-fixture.mjs /tmp/passport-compressor-fixture.pdf
-node tests/create-passport-fixture.mjs /tmp/passport-compressor-impossible.pdf --oversized-profile
-python3 tests/passport-compressor-browser.py \
-  /tmp/passport-compressor-fixture.pdf \
-  /tmp/passport-compressor-impossible.pdf
-```
-
-该回归不使用真实护照数据；它同时验证可压缩文件能生成合格成品，以及第3页
-本身超过预算时停止处理且不提供下载。
-
-健康表压缩使用另一组无个人信息的合成文件：
+所有夹具均为现场生成的合成文件，不使用真实个人资料。若单独运行 Python 回归，
+先启动 `npm run dev -- --port 4173 --host 127.0.0.1` 和独立 Chromium CDP 实例，
+再通过 `CDP_URL`、`PASSPORT_TEST_URL` 或 `HEALTH_TEST_URL`、以及对应的截图和输出变量
+指定地址。Linux 下建议显式设置：
 
 ```bash
-node tests/create-health-form-fixture.mjs /tmp/health-form-compressor-fixture.pdf
-node tests/create-health-form-fixture.mjs /tmp/health-form-compressor-impossible.pdf --impossible
-python3 tests/health-compressor-browser.py \
-  /tmp/health-form-compressor-fixture.pdf \
-  /tmp/health-form-compressor-impossible.pdf
+export RUNNER_TEMP="${RUNNER_TEMP:-/tmp}"
+export PASSPORT_TEST_SCREENSHOT="$RUNNER_TEMP/passport-compressor-browser.png"
+export PASSPORT_TEST_OUTPUT="$RUNNER_TEMP/passport-compressor-browser-output.pdf"
+export HEALTH_TEST_SCREENSHOT="$RUNNER_TEMP/health-compressor-browser.png"
+export HEALTH_TEST_OUTPUT="$RUNNER_TEMP/health-compressor-browser-output.pdf"
 ```
 
-该回归验证每个成品严格小于 500,000 字节、下载文件名与原文件一致、原文件未被
-改动，以及无法在安全清晰度内达标时不提供下载。
+护照回归验证可压缩文件能生成不超过 2,900,000 字节的成品，以及第 3 页本身超过预算时
+停止处理且不提供下载；健康表回归验证每个成品严格小于 500,000 字节、下载文件名与原文件
+一致、原文件未被改动，以及无法在安全清晰度内达标时不提供下载。
 
-该检查会直接打开 `file://.../export-single/index.html`，验证移动端首屏行动路径、
+单文件检查会直接打开 `file://.../export-single/index.html`，验证移动端首屏行动路径、
 主内容顺序、公开页面无问答入口或问答正文、专业费用切换、键盘折叠、全部 `href`、
 桌面/平板/移动端触控目标与横向溢出，以及控制台和网络请求错误。
 如使用其他端口，可通过 `CDP_URL` 指定调试地址。
