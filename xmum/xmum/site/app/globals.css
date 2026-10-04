@@ -340,8 +340,8 @@ main {
   min-height: 560px;
   position: relative;
   overflow: hidden;
-  background: var(--coral-accessible);
-  color: white;
+  background: var(--coral-soft);
+  color: var(--ink);
 }
 
 .first-card {
@@ -350,6 +350,7 @@ main {
   left: 24px;
   bottom: 24px;
   padding: 20px 22px;
+  border: 1px solid var(--line-strong);
   border-radius: var(--radius-md);
   background: white;
   color: var(--ink);
@@ -3568,6 +3569,7 @@ details[open] > summary .disclosure-chevron {
 
 .stage-card-current > summary {
   background: #f1f4f8;
+  box-shadow: inset 3px 0 0 var(--coral-accessible);
 }
 
 .stage-state-group {
