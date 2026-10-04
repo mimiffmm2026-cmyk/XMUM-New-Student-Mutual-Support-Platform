@@ -5334,6 +5334,21 @@ details[open] > summary .disclosure-chevron {
   }
 }
 
+@media (max-width: 360px) {
+  .official-domain-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .official-domain-card strong {
+    width: 100%;
+    overflow-wrap: normal;
+    white-space: nowrap;
+  }
+}
+
 /* 食堂攻略 */
 .dining-section {
   --dining-region-color: var(--navy);
