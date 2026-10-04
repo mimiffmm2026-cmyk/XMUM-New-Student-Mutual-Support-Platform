@@ -5261,6 +5261,7 @@ details[open] > summary .disclosure-chevron {
 
 .official-core {
   padding: 36px 40px 0;
+  align-items: start;
 }
 
 .official-copy,
@@ -5297,6 +5298,10 @@ details[open] > summary .disclosure-chevron {
 
 .official-domain-card.official-primary {
   border-color: var(--coral-accessible);
+}
+
+.official-domain-card.official-primary button:focus-visible {
+  outline-color: var(--surface);
 }
 
 .copy-feedback {
