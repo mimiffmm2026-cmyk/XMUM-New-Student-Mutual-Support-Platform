@@ -5233,6 +5233,107 @@ details[open] > summary .disclosure-chevron {
   }
 }
 
+/* 官方核对 D1：保留深色标题带，把长文与核对表放到浅表面。 */
+.official-section {
+  padding: 0 0 36px;
+  border: 1px solid var(--line);
+  background: var(--canvas);
+  color: var(--ink);
+}
+
+.official-section .module-heading {
+  margin-bottom: 0;
+  padding: 24px 40px;
+  border: 0;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  background: var(--navy);
+}
+
+.official-section .module-heading h2,
+.official-section .module-heading p {
+  color: white;
+}
+
+.official-section .module-heading > span {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffd2c6;
+}
+
+.official-core {
+  padding: 36px 40px 0;
+}
+
+.official-copy,
+.official-actions {
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+}
+
+.official-copy h3,
+.official-actions-heading h3 {
+  color: var(--ink);
+}
+
+.official-intro,
+.official-actions-heading p {
+  color: var(--muted);
+}
+
+.official-safety-note {
+  border-color: #e3a996;
+  background: var(--coral-soft);
+  color: #6f3b2e;
+}
+
+.official-safety-note strong {
+  color: var(--coral-dark);
+}
+
+.official-domain-card {
+  border: 1px solid var(--line);
+}
+
+.official-domain-card.official-primary {
+  border-color: var(--coral-accessible);
+}
+
+.copy-feedback {
+  color: var(--subtle);
+}
+
+.official-section .source-policy {
+  width: auto;
+  margin: 28px 40px 0;
+  border-color: var(--line-strong);
+  background: var(--surface);
+}
+
+@media (max-width: 640px) {
+  .official-section {
+    padding-bottom: 24px;
+  }
+
+  .official-section .module-heading {
+    padding: 20px;
+  }
+
+  .official-core {
+    padding: 24px 20px 0;
+    gap: 18px;
+  }
+
+  .official-copy,
+  .official-actions {
+    padding: 18px;
+  }
+
+  .official-section .source-policy {
+    margin: 22px 20px 0;
+  }
+}
+
 /* 食堂攻略 */
 .dining-section {
   --dining-region-color: var(--navy);
