@@ -1,6 +1,6 @@
 # XMUM 资料与迁移说明
 
-本说明记录网站代码与原始资料的边界，方便在另一台电脑上恢复开发环境。网站代码和资料均位于外层仓库的 `xmum/xmum/` 目录下；原始资料集中在 `materials/`，不再与网站源码混放。
+本说明记录网站代码与原始资料的边界，方便在另一台电脑上恢复开发环境。网站代码和资料均位于外层仓库的 `开发目录/xmum/xmum/` 目录下；原始资料集中在 `materials/`，不再与网站源码混放。
 
 ## 目录分类
 
@@ -19,7 +19,7 @@
 ## 本地运行
 
 ```bash
-cd xmum/xmum/site
+cd 开发目录/xmum/xmum/site
 node --version
 npm ci
 npm test
@@ -45,7 +45,7 @@ npm run test:single-export
 
 ## 验收
 
-1. `xmum/xmum/site/package.json` 和 `package-lock.json` 存在。
+1. `开发目录/xmum/xmum/site/package.json` 和 `package-lock.json` 存在。
 2. `materials/` 中保留需要复核的原始资料，网站文档中的相对路径指向 `materials/`。
 3. 仓库中不存在迁移压缩包、`.DS_Store`、`.env`、`node_modules` 或构建缓存。
 4. 在目标电脑执行 `npm ci`、`npm test` 和 `npm run lint`。

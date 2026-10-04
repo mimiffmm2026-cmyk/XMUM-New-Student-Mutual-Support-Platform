@@ -14,11 +14,11 @@
 6. 完成后开 PR，描述里写 “Closes #N”，并附上【Codex 自审】：改了什么、怎么测试的、有哪些风险、与方案是否一致。
 7. 不要自己合并 PR。
 
-通用规则：界面文字使用中文；项目代码位于 xmum/ 目录；不提交 .env、密钥、node_modules、.DS_Store。
+通用规则：界面文字使用中文；项目代码位于 开发目录/xmum/ 目录；不提交 .env、密钥、node_modules、.DS_Store。
 
 ## 项目结构
 
-- `xmum/xmum/site/`：项目代码、测试、构建脚本和发布配置。
-- `xmum/xmum/materials/`：原始资料和资料整理辅助脚本，包括 PDF、XLSX、截图、网页资料、文本提取结果和模型比较结果。
-- `xmum/xmum/MIGRATION.md`：资料分类、迁移和本地运行说明。
+- `开发目录/xmum/xmum/site/`：项目代码、测试、构建脚本和发布配置。
+- `开发目录/xmum/xmum/materials/`：原始资料和资料整理辅助脚本，包括 PDF、XLSX、截图、网页资料、文本提取结果和模型比较结果。
+- `开发目录/xmum/xmum/MIGRATION.md`：资料分类、迁移和本地运行说明。
 - 迁移压缩包及其校验文件不属于项目内容，不应重新提交。
