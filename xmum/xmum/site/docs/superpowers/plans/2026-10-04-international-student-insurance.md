@@ -40,29 +40,29 @@
 - Consumes: 现有 `CampusLifeTopic` 数据结构与 `campusLifeTopics.map` 渲染。
 - Produces: `id: "international-student-insurance"` 主题，包含标题、适用范围摘要、官方来源事实、核验清单和来源登记。
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
   - 在 SSR 测试中断言主题标题、摘要、无 `open` 属性、`EMGS`/`Etiqa`、官方来源提示和“五份主题整理”。
   - 在源码/发布安全测试中断言主题来源登记存在，并排除示例保单号、私人联系方式、未核验表单和网页跳转。
 
-- [ ] **Step 2: Run the focused tests to verify they fail**
+- [x] **Step 2: Run the focused tests to verify they fail**
 
   Run: `npm run build && node --test tests/rendered-html.test.mjs tests/release-readiness.test.mjs`
 
   Expected: 新增保险主题和“五份主题整理”断言失败，基线其余断言保持可运行。
 
-- [ ] **Step 3: Implement the minimal content change**
+- [x] **Step 3: Implement the minimal content change**
   - 在 `healthcare` 主题后新增独立 `CampusLifeTopic`；只写 EMGS 2026保险页面、2026版 Etiqa 福利表和 Etiqa+ 官方指南已支持的高层信息。
   - 将自付额、个人保单号、当前 Panel 名单、除外责任和个人理赔字段放入“当届确认”提示，不把讲座整理直接升级为条款。
   - 将页面副标题的“四份主题整理”改为“五份主题整理”。
   - 在证据登记中加入来源名称、核验日期、支持范围和公开边界，不写外链或敏感字段。
 
-- [ ] **Step 4: Run focused tests to verify they pass**
+- [x] **Step 4: Run focused tests to verify they pass**
 
   Run: `npm run build && node --test tests/rendered-html.test.mjs tests/release-readiness.test.mjs`
 
   Expected: focused tests pass，新增主题默认折叠、来源和安全断言均通过。
 
-- [ ] **Step 5: Run lint and commit**
+- [x] **Step 5: Run lint and commit**
 
   Run: `npm run lint`
 

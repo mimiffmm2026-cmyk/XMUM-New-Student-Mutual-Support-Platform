@@ -348,6 +348,7 @@ test("server-renders the public non-official new-student guide", async () => {
   assert.match(insuranceDetails, /Panel Clinic|Panel Provider/);
   assert.ok(insuranceTitleStart < diningStart, "insurance should stay before dining");
   assert.match(html, /校园照片、地图与五份主题整理/);
+  assert.match(html, /主体资料最后核对：2026-09-17；国际生医疗保险专题核对：2026-10-04/);
 
   // Timeline urgency is hydrated from the visitor's UTC+8 calendar day. SSR
   // must stay stable instead of baking a date-relative "past due" state.
