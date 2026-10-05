@@ -6,10 +6,12 @@ import PassportPdfCompressor from "./PassportPdfCompressor";
 import DiningGuide from "./DiningGuide";
 import PackingGuide from "./PackingGuide";
 import AccommodationGuide from "./AccommodationGuide";
+import { accommodationUpdatedAt } from "./accommodation-content";
 import {
   campusLifeTopics,
   contactGroups,
   guideStages,
+  insuranceReviewedAt,
   keyDates,
   lastReviewedAt,
   parentTopics,
@@ -397,7 +399,9 @@ export default function Home() {
       <section className="hero" id="top">
         <div className="hero-copy">
           <p className="hero-badge">
-            资料核对至 {lastReviewedAt}
+            主体资料核对至 {lastReviewedAt}<br />
+            保险专题核对至 {insuranceReviewedAt}<br />
+            住宿候选核对至 {accommodationUpdatedAt}
           </p>
           <h1>现在先做什么，<br />从这里开始。</h1>
           <p className="hero-lead">
@@ -436,7 +440,7 @@ export default function Home() {
       <section className="trust-strip" aria-label="办理与隐私边界">
         <strong>办理 / 隐私边界</strong>
         <span>护照与健康表 PDF 压缩仅在浏览器本地处理，不上传或保存文件；托管平台仍可能处理必要的访问与安全数据。</span>
-        <span className="source-count">资料核对至 {lastReviewedAt} · 此后更新不会自动纳入</span>
+        <span className="source-count">主体资料核对至 {lastReviewedAt} · 保险专题核对至 {insuranceReviewedAt} · 住宿候选核对至 {accommodationUpdatedAt} · 此后更新不会自动纳入</span>
       </section>
 
       <section className="section quick-section module-section" id="quick">
@@ -945,7 +949,7 @@ export default function Home() {
 
         <div className="campus-life-note" role="note">
           <strong>怎样阅读</strong>
-          <p><b>“2025攻略记录”</b>表示内容可以帮助提前了解校园生活；<b>“2026使用前复核”</b>表示价格、日期、政策、机构安排、名单或联系方式仍须以当届校方通知为准。显示不等于已经通过2026校方核验。主体资料最后核对：2026-09-17；国际生医疗保险专题核对：2026-10-04。</p>
+          <p><b>“2025攻略记录”</b>表示内容可以帮助提前了解校园生活；<b>“2026使用前复核”</b>表示价格、日期、政策、机构安排、名单或联系方式仍须以当届校方通知为准。显示不等于已经通过2026校方核验。主体资料最后核对：{lastReviewedAt}；国际生医疗保险专题核对：{insuranceReviewedAt}；住宿候选专题核对：{accommodationUpdatedAt}。</p>
         </div>
 
         <div className="campus-life-list">
@@ -1178,7 +1182,7 @@ export default function Home() {
         </details>
         <div className="footer-meta">
           <p>厦大马校2026级 · 湖南新同学收集整理</p>
-          <p>资料人工核对至：{lastReviewedAt} · 此后通知不会自动纳入</p>
+          <p>主体资料人工核对至：{lastReviewedAt} · 保险专题：{insuranceReviewedAt} · 住宿候选：{accommodationUpdatedAt} · 此后通知不会自动纳入</p>
         </div>
       </footer>
 
