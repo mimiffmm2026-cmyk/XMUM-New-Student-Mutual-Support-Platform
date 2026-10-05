@@ -14,6 +14,7 @@ export type AccommodationCandidate = {
   checkInOut: string;
   highlights: readonly string[];
   notes: readonly string[];
+  tags: readonly string[];
   source: string;
   sourceUrl: string;
   verifiedAt: string;
@@ -21,6 +22,24 @@ export type AccommodationCandidate = {
 };
 
 export const accommodationUpdatedAt = "2026-10-05";
+
+export function getAccommodationFreshness(
+  verifiedAt: string,
+  currentUtc8Day: number | null,
+): "stale" | null {
+  if (currentUtc8Day === null) {
+    return null;
+  }
+
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(verifiedAt);
+  if (!match) {
+    return null;
+  }
+
+  const verifiedDay =
+    Date.UTC(Number(match[1]), Number(match[2]) - 1, Number(match[3])) / (24 * 60 * 60 * 1000);
+  return currentUtc8Day - verifiedDay > 30 ? "stale" : null;
+}
 
 export const accommodationCandidates: readonly AccommodationCandidate[] = [
   {
@@ -39,6 +58,7 @@ export const accommodationCandidates: readonly AccommodationCandidate[] = [
     checkInOut: "按具体房源确认；公寓式房源可能需要提前联系房东取得入住说明",
     highlights: ["公寓式房源", "部分房源含简易厨房", "停车和设施以选定房源为准"],
     notes: ["候选名称按 Bell Suites @ Sunsuria City 资料记录；不等同于其他运营方房源"],
+    tags: ["公寓式空间（按房源）"],
     source: "Booking.com Bell Suites @ Sunsuria City 房源页",
     sourceUrl: "https://www.booking.com/hotel/my/bell-suites-sunsuria-city.en-gb.html",
     verifiedAt: accommodationUpdatedAt,
@@ -60,6 +80,7 @@ export const accommodationCandidates: readonly AccommodationCandidate[] = [
     checkInOut: "按具体房源确认；不要把开发商项目资料当作已完成预订",
     highlights: ["Bandar Sunsuria 生活圈", "项目定位包含居住空间", "短租规则依具体房源"],
     notes: ["仅项目资料，当前不可视为可订短住房源或酒店推荐；取得可核验房源后再升级状态"],
+    tags: [],
     source: "Horizon L&L 官方项目页",
     sourceUrl: "https://horizonll.com/project/horizon-suites-tower-a-b/",
     verifiedAt: accommodationUpdatedAt,
@@ -81,6 +102,7 @@ export const accommodationCandidates: readonly AccommodationCandidate[] = [
     checkInOut: "官网条款：15:00入住、12:00退房；早到或延迟退房需直接向酒店确认",
     highlights: ["官网列出单人、双人、三人和家庭房型", "可先按房型和人数筛选", "距 XMUM 的公开距离需结合当天路线复核"],
     notes: ["价格为 2026-10-05 官网房型页观察值，不是锁定报价"],
+    tags: ["家庭房型", "离校较近（平台距离）"],
     source: "S8 Boutique Hotel 官方房型/条款页；Booking.com 房源信息",
     sourceUrl: "https://s8boutiquehotel.com/",
     verifiedAt: accommodationUpdatedAt,
@@ -102,6 +124,7 @@ export const accommodationCandidates: readonly AccommodationCandidate[] = [
     checkInOut: "官网列 15:00入住、12:00退房；早到或延迟退房需直接向酒店确认",
     highlights: ["官方页面列有 KLIA 机场接驳", "设停车、泳池、健身房和餐厅", "适合先处理机场到达再安排到校"],
     notes: ["更适合把机场接驳作为优先条件的家庭；到校交通仍需单独确认"],
+    tags: ["机场接驳"],
     source: "IHG Holiday Inn Sepang - Airport 官方页面",
     sourceUrl: "https://www.ihg.com/holidayinn/hotels/us/en/sepang/kulia/hoteldetail",
     verifiedAt: accommodationUpdatedAt,
@@ -115,8 +138,8 @@ export const parentArrivalChecklist = [
     detail: "学生按学校当前住宿规定办理校内住宿；家长短住另行安排，不要把酒店预订当作学生校外住宿许可。",
   },
   {
-    title: "预订前确认到达细节",
-    detail: "确认入住时间、行李寄存、机场接机或备用交通；学校接机优先保障学生本人，陪同人员要准备自行到校方案。",
+    title: "预订前确认入住细节",
+    detail: "确认入住时间、行李寄存、晚到入住方式和酒店联系人；家长交通与到校安排统一按下方一日流程核对。",
   },
   {
     title: "付款前核对总价和规则",
@@ -124,7 +147,40 @@ export const parentArrivalChecklist = [
   },
   {
     title: "保留确认凭证",
-    detail: "保存订单、酒店地址、入住联系人和付款记录；到校路线以出发当天地图和酒店最新通知为准。",
+    detail: "保存订单、酒店地址、入住联系人和付款记录；入住前再按当天通知确认变更。",
+  },
+] as const;
+
+export const accommodationBookingChecklist = [
+  "房型和入住人数是否匹配，是否需要加床",
+  "床型、卫浴和简易厨房等设施是否与房源描述一致",
+  "押金、清洁费、服务费和付款方式如何收取",
+  "晚到入住是否需要提前联系，钥匙或门禁怎样领取",
+  "行李寄存是否可用，寄存时间和责任边界是什么",
+  "楼栋是否有电梯，老人或大件行李是否方便",
+  "取消、改期和未入住规则是否适用于当前房价",
+] as const;
+
+export const parentArrivalDayPlan = [
+  {
+    title: "抵达机场：家长单独安排交通",
+    detail: "陪同家长按出发当天查询机场到住宿的交通时间和费用；学生首次入境按学校统一接机安排，不随家长先入住酒店。",
+  },
+  {
+    title: "办理入住并安置行李",
+    detail: "按入住前清单确认房型、押金、晚到入住、行李寄存和电梯；不要把酒店入住凭证当作学生校内住宿许可。",
+  },
+  {
+    title: "陪同学生前往报到地点",
+    detail: "家长可陪同学生前往报到地点；家长能否进入现场、可停留区域和办理顺序以学校当天通知为准。",
+  },
+  {
+    title: "采购与首日安排",
+    detail: "只安排首日必要物品，采购地点和营业情况按当天查询；学生报到、领取住宿和办理手续以学校当前安排为准。",
+  },
+  {
+    title: "确认返程与后续联系",
+    detail: "保存酒店、学校和交通确认信息；家长入境及停留安排沿用现有需重新核验的规则，不用本站推算停留天数。",
   },
 ] as const;
 

@@ -1,7 +1,10 @@
 import {
+  accommodationBookingChecklist,
   accommodationCandidates,
   accommodationReviewNote,
   accommodationUpdatedAt,
+  getAccommodationFreshness,
+  parentArrivalDayPlan,
   parentArrivalChecklist,
   type AccommodationCandidate,
 } from "./accommodation-content";
@@ -16,7 +19,15 @@ function DisclosureAction() {
   );
 }
 
-function AccommodationCard({ candidate }: { candidate: AccommodationCandidate }) {
+function AccommodationCard({
+  candidate,
+  currentUtc8Day,
+}: {
+  candidate: AccommodationCandidate;
+  currentUtc8Day: number | null;
+}) {
+  const freshness = getAccommodationFreshness(candidate.verifiedAt, currentUtc8Day);
+
   return (
     <article className="accommodation-card">
       <header className="accommodation-card-heading">
@@ -39,7 +50,10 @@ function AccommodationCard({ candidate }: { candidate: AccommodationCandidate })
         </div>
         <div>
           <dt>价格口径</dt>
-          <dd>{candidate.priceNote} 查询日期：{candidate.priceCheckedAt}。{candidate.taxNote}</dd>
+          <dd>
+            {candidate.priceNote} 查询日期：{candidate.priceCheckedAt}。{candidate.taxNote}
+            {freshness === "stale" ? <span className="accommodation-freshness accommodation-freshness-stale">需要重新核对</span> : null}
+          </dd>
         </div>
         <div>
           <dt>入住与取消</dt>
@@ -50,6 +64,12 @@ function AccommodationCard({ candidate }: { candidate: AccommodationCandidate })
       <ul className="accommodation-highlights" aria-label={`${candidate.name}可先核对的特点`}>
         {candidate.highlights.map((highlight) => <li key={highlight}>{highlight}</li>)}
       </ul>
+
+      {candidate.tags.length > 0 ? (
+        <ul className="accommodation-tags" aria-label={`${candidate.name}选择标签`}>
+          {candidate.tags.map((tag) => <li key={tag}>{tag}</li>)}
+        </ul>
+      ) : null}
 
       <ul className="accommodation-notes" aria-label={`${candidate.name}备注`}>
         {candidate.notes.map((note) => <li key={note}>{note}</li>)}
@@ -65,13 +85,19 @@ function AccommodationCard({ candidate }: { candidate: AccommodationCandidate })
   );
 }
 
-export default function AccommodationGuide() {
+export default function AccommodationGuide({ currentUtc8Day = null }: { currentUtc8Day?: number | null }) {
+  const hasStaleCandidate = currentUtc8Day !== null && accommodationCandidates.some(
+    (candidate) => getAccommodationFreshness(candidate.verifiedAt, currentUtc8Day) === "stale",
+  );
+
   return (
     <details className="accommodation-section secondary-section" id="accommodation">
       <summary className="section-heading secondary-section-summary">
-        <span className="secondary-section-title">
-          <h2>家长短住与校外住宿候选</h2>
-          <p>家长短住参考 · 来源已核对 · 价格和房态需在预订前复核</p>
+          <span className="secondary-section-title">
+            <h2>家长短住与校外住宿候选</h2>
+            <p>
+              家长短住参考 · {hasStaleCandidate ? "部分资料需要重新核对 · " : "来源日期已标明 · "}价格和房态需在预订前复核
+            </p>
         </span>
         <DisclosureAction />
       </summary>
@@ -84,20 +110,43 @@ export default function AccommodationGuide() {
 
         <div className="accommodation-grid">
           {accommodationCandidates.map((candidate) => (
-            <AccommodationCard key={candidate.id} candidate={candidate} />
+            <AccommodationCard key={candidate.id} candidate={candidate} currentUtc8Day={currentUtc8Day} />
           ))}
         </div>
 
         <section className="accommodation-arrival" aria-labelledby="accommodation-arrival-title">
           <div className="accommodation-subheading">
-            <h3 id="accommodation-arrival-title">家长到校前四步</h3>
-            <p>把酒店预订、接机和到校安排分开核对。</p>
+            <h3 id="accommodation-arrival-title">预订与入住前四步</h3>
+            <p>按预订到入住顺序核对住宿信息；交通与到校安排统一看下方一日流程。</p>
           </div>
           <ol>
             {parentArrivalChecklist.map((item) => (
               <li key={item.title}>
                 <strong>{item.title}</strong>
                 <span>{item.detail}</span>
+                {item.title === "付款前核对总价和规则" ? (
+                  <>
+                    <span className="accommodation-checklist-title">入住前核对清单</span>
+                    <ul className="accommodation-booking-checklist" aria-label="入住前核对清单">
+                      {accommodationBookingChecklist.map((check) => <li key={check}>{check}</li>)}
+                    </ul>
+                  </>
+                ) : null}
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        <section className="accommodation-day-plan" aria-labelledby="accommodation-day-plan-title">
+          <div className="accommodation-subheading">
+            <h3 id="accommodation-day-plan-title">家长到校一日流程</h3>
+            <p>交通、入住、报到和返程分开核对；动态时间与费用按当天查询。</p>
+          </div>
+          <ol>
+            {parentArrivalDayPlan.map((step) => (
+              <li key={step.title}>
+                <strong>{step.title}</strong>
+                <span>{step.detail}</span>
               </li>
             ))}
           </ol>

@@ -3,8 +3,11 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 import {
+  accommodationBookingChecklist,
   accommodationCandidates,
   accommodationUpdatedAt,
+  getAccommodationFreshness,
+  parentArrivalDayPlan,
   parentArrivalChecklist,
 } from "../app/accommodation-content.ts";
 
@@ -67,9 +70,47 @@ test("parent arrival checklist keeps school housing and family stay separate", (
   assert.equal(parentArrivalChecklist.length, 4);
   assert.match(parentArrivalChecklist[0].detail, /学生.*校内住宿|校内住宿.*学生/);
   assert.match(parentArrivalChecklist[0].detail, /家长.*短住|短住.*家长/);
-  assert.match(parentArrivalChecklist[1].detail, /入住时间|行李|接机/);
+  assert.match(parentArrivalChecklist[1].detail, /入住时间|行李|晚到入住/);
   assert.match(parentArrivalChecklist[2].detail, /税费|押金|取消/);
   assert.match(parentArrivalChecklist[3].detail, /确认凭证|订单/);
+});
+
+test("parent arrival details cover transport, check-in, and the first-day boundary", () => {
+  assert.equal(accommodationBookingChecklist.length, 7);
+  assert.match(accommodationBookingChecklist.join(" "), /房型.*人数/);
+  assert.match(accommodationBookingChecklist.join(" "), /床型/);
+  assert.match(accommodationBookingChecklist.join(" "), /押金/);
+  assert.match(accommodationBookingChecklist.join(" "), /晚到入住/);
+  assert.match(accommodationBookingChecklist.join(" "), /行李寄存/);
+  assert.match(accommodationBookingChecklist.join(" "), /电梯/);
+  assert.match(accommodationBookingChecklist.join(" "), /取消/);
+
+  assert.equal(parentArrivalDayPlan.length, 5);
+  const dayPlan = parentArrivalDayPlan.map((step) => `${step.title} ${step.detail}`).join(" ");
+  assert.match(dayPlan, /当天查询/);
+  assert.match(dayPlan, /学生首次入境.*统一接机/);
+  assert.match(dayPlan, /陪同学生.*报到/);
+  assert.match(dayPlan, /家长能否进入现场.*当天通知/);
+  assert.doesNotMatch(dayPlan, /\d+\s*分钟|MYR|RM\s*\d/);
+});
+
+test("accommodation freshness expires only after the 30-day boundary", () => {
+  const verifiedDay = Date.UTC(2026, 9, 5) / (24 * 60 * 60 * 1000);
+  assert.equal(getAccommodationFreshness("2026-10-05", null), null);
+  assert.equal(getAccommodationFreshness("2026-10-05", verifiedDay + 30), null);
+  assert.equal(getAccommodationFreshness("2026-10-05", verifiedDay + 31), "stale");
+  assert.equal(getAccommodationFreshness("2026-10-05", verifiedDay - 1), null);
+  assert.equal(getAccommodationFreshness("not-a-date", verifiedDay + 31), null);
+});
+
+test("accommodation tags stay source-bounded and static", () => {
+  const tagsById = Object.fromEntries(
+    accommodationCandidates.map((candidate) => [candidate.id, candidate.tags]),
+  );
+  assert.deepEqual(tagsById["bell-suites"], ["公寓式空间（按房源）"]);
+  assert.deepEqual(tagsById["s8-boutique"], ["家庭房型", "离校较近（平台距离）"]);
+  assert.deepEqual(tagsById["holiday-inn-sepang"], ["机场接驳"]);
+  assert.deepEqual(tagsById["horizon-suites"], []);
 });
 
 test("parent lodging FAQ has provenance for the new accommodation entry point", async () => {
@@ -111,5 +152,16 @@ test("server-renders the parent accommodation module without web jumps", async (
   assert.match(html, /仅项目资料，暂不推荐/);
   assert.match(html, /Bell Suites by Salaam/);
   assert.match(html, /学校不为家长提供住宿/);
+  assert.match(html, /预订与入住前四步/);
+  assert.doesNotMatch(html, /家长到校前四步/);
+  assert.match(html, /家长到校一日流程/);
+  assert.match(html, /入住前核对/);
+  assert.match(html, /机场接驳/);
+  assert.doesNotMatch(html, /需要重新核对/);
   assert.doesNotMatch(html, /href=["']https?:\/\//i);
+});
+
+test("page passes its existing UTC+8 day into the accommodation module", async () => {
+  const page = await readFile(new URL("../app/page.tsx", import.meta.url), "utf8");
+  assert.match(page, /<AccommodationGuide currentUtc8Day=\{currentUtc8Day\} \/>/);
 });
