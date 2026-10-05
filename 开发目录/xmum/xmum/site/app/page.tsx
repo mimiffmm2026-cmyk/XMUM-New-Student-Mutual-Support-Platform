@@ -851,7 +851,7 @@ export default function Home() {
         </div>
       </details>
 
-      <AccommodationGuide />
+      <AccommodationGuide currentUtc8Day={currentUtc8Day} />
 
       <details className="family-budget-section secondary-section" id="family-budget">
         <summary className="section-heading secondary-section-summary">
