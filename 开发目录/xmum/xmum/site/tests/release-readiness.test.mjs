@@ -84,6 +84,24 @@ test("release evidence register records the verified source without publishing s
   assert.match(register, /不公开示例保单号、私人或高风险联系方式/);
   assert.doesNotMatch(register, /TGWH\d+|TOES\d+|THES\d+|TOPW\d+/);
 
+  assert.match(register, /家长短住候选（2026-10-05 新增）/);
+  for (const candidate of [
+    "Bell Suites @ Sunsuria City",
+    "S8 Boutique Hotel",
+    "Holiday Inn Sepang - Airport",
+    "Horizon Suites, KLIA",
+  ]) {
+    assert.match(register, new RegExp(candidate.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+  }
+  assert.match(register, /S8 Boutique Hotel.*MYR 87–297\/晚/);
+  assert.match(register, /税费另计；价格随日期和房型变化，不是锁定报价/);
+  assert.match(register, /Horizon Suites, KLIA.*仅项目资料，暂不推荐/);
+  assert.match(register, /平台显示的距离只作筛选依据/);
+  assert.match(register, /不构成酒店推荐或背书/);
+  assert.match(register, /Bell Suites by Salaam 与 Bell Suites @ Sunsuria City 是不同记录，不合并/);
+  assert.match(register, /在线查看，未保存本地页面快照/);
+  assert.match(register, /2026-11-05 起/);
+
   for (const forbidden of [
     /(?:初始密码|默认密码)[^。\n]{0,80}(?:身份证|出生日期|[0-9]{6,})/i,
     /(?:收款账号|银行账号|account\s*number)\s*[:：]?\s*[0-9][0-9 -]{7,}/i,
