@@ -64,6 +64,7 @@ export type ProgramInfo = {
 
 export const officialSource = "《厦门大学马来西亚分校2026级本科生入学须知》（2026-07-22）";
 export const lastReviewedAt = "2026-09-17";
+export const insuranceReviewedAt = "2026-10-04";
 
 export const contactGroups = [
   {
@@ -352,8 +353,9 @@ export const parentTopics: ParentTopic[] = [
   {
     eyebrow: "健康与生活",
     title: "提前了解保险、诊所和宿舍规则",
-    summary: "学校统一购买国际学生医疗保险，校内设诊所；具体保障范围仍需查看保险文件。",
+    summary: "学校或相关安排可能包含国际学生医疗保险；只有在本人当前记录确认承保关系后，才按当前保险资料办理，校内设诊所。",
     points: [
+      "先在本人当前记录确认是否通过 EMGS 选择 Etiqa 且已付款或建立承保关系",
       "记录学生常用药、过敏和紧急联系人",
       "确认保险报销范围与附近医院",
       "宿舍提供单人床和床垫，其他床品自备或到校购买",
@@ -470,7 +472,7 @@ export const campusLifeTopics: CampusLifeTopic[] = [
       "Etiqa 2025官方指南｜住院/门诊理赔可在 Etiqa+ 提交，指南写明出院后 30 天内上传指定材料；时限和材料仍以当前理赔页面为准",
     ],
     reviewPoints: [
-      "当届确认｜“学校统一购买国际学生医疗保险”与“通过 EMGS 选择 Etiqa”是否对应本人届次、承保公司、计划和付款记录；不要把 Etiqa 当作所有国际生默认方案",
+      "当届确认｜本人是否由学校或其他安排方纳入保险、是否通过 EMGS 选择 Etiqa，以及是否已付款或建立承保关系；不要把 Etiqa 当作所有国际生默认方案",
       "当届确认｜保障起止日、Plan 2/Plan 3、自付额、除外责任、非 Panel 就医、政府医院 GL/押金和校内诊所结算方式",
       "当届确认｜Etiqa+ 当前应用可用性、个人 Policy/Contract No、Panel Clinic/Panel Hospital 名单以及理赔字段和时限",
       "当届确认｜不公开示例保单号、私人或高风险联系方式、未核验表单、冲突地址/邮箱；讲座整理中的演示值和笔误不构成条款",
@@ -836,7 +838,7 @@ export const faqs: FaqItem[] = [
   },
   {
     question: "在马来西亚生病了怎么办？",
-    answer: "学校统一购买国际学生医疗保险，校内设诊所；学生也可按个人情况自备常用药。具体就诊、保险范围、报销额度和校外医院安排仍需查看到校后学校提供的保险资料。",
+    answer: "在马来西亚生病时，先到校内诊所或按学校当期安排就医；只有在本人当前记录确认通过 EMGS 选择 Etiqa 且已付款或建立承保关系后，才按对应保险资料办理。具体就诊、保险范围、报销额度和校外医院安排仍需查看本人当前保单、EMGS 门户和学校最新通知。",
     category: "健康与安全",
     audience: "共同",
     status: "2026官方原文",

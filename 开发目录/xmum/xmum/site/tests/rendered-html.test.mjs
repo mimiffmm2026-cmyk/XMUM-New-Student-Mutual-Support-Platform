@@ -74,6 +74,9 @@ test("server-renders the public non-official new-student guide", async () => {
   assert.match(html, /涉及正式办理事项，以本人当前系统为准/);
   assert.match(html, /查看我的下一步/);
   assert.doesNotMatch(html, /查询录取并查看下一步/);
+  assert.match(html, /主体资料核对至 (?:<!-- -->)?2026-09-17/);
+  assert.match(html, /保险专题核对至 (?:<!-- -->)?2026-10-04/);
+  assert.match(html, /住宿候选核对至 (?:<!-- -->)?2026-10-05/);
 
   assert.match(html, /来源冲突时，以什么为准/);
   assert.match(html, /本人当前迎新系统页面/);
@@ -343,12 +346,14 @@ test("server-renders the public non-official new-student guide", async () => {
     "the insurance topic should be collapsed by default",
   );
   assert.match(insuranceSummary, /通过 EMGS 选择 Etiqa/);
-  assert.match(insuranceDetails, /学校统一购买国际学生医疗保险/);
+  assert.match(insuranceDetails, /建立承保关系/);
   assert.match(insuranceDetails, /以本人当前保单、EMGS 门户和校方通知为准/);
   assert.match(insuranceDetails, /Panel Clinic|Panel Provider/);
   assert.ok(insuranceTitleStart < diningStart, "insurance should stay before dining");
   assert.match(html, /校园照片、地图与五份主题整理/);
-  assert.match(html, /主体资料最后核对：2026-09-17；国际生医疗保险专题核对：2026-10-04/);
+  assert.match(html, /主体资料最后核对：(?:<!-- -->)?2026-09-17(?:<!-- -->)?；国际生医疗保险专题核对：(?:<!-- -->)?2026-10-04/);
+  assert.match(html, /住宿候选专题核对：(?:<!-- -->)?2026-10-05/);
+  assert.doesNotMatch(html, /学校统一购买国际学生医疗保险/);
 
   // Timeline urgency is hydrated from the visitor's UTC+8 calendar day. SSR
   // must stay stable instead of baking a date-relative "past due" state.
@@ -411,6 +416,11 @@ test("source keeps content, safety, and interaction contracts", async () => {
   assert.equal((keyDatesSource.match(/isoDate: "2026-\d{2}-\d{2}"/g) ?? []).length, 4);
   assert.equal((keyDatesSource.match(/isoDate: undefined/g) ?? []).length, 4);
   assert.match(content, /export const lastReviewedAt = "2026-09-17"/);
+  assert.match(content, /export const insuranceReviewedAt = "2026-10-04"/);
+  const illnessFaq = faqSourceBlock(content, "在马来西亚生病了怎么办？");
+  assert.match(illnessFaq, /本人当前记录确认通过 EMGS 选择 Etiqa/);
+  assert.match(illnessFaq, /建立承保关系/);
+  assert.doesNotMatch(illnessFaq, /学校统一购买国际学生医疗保险/);
   assert.match(content, /护照有效期至少至2028年3月31日/);
   assert.doesNotMatch(content, /2030年4月30日|2029年4月30日|三年制专业/);
   assert.match(content, /本导航不提供考生号组成规则/);
