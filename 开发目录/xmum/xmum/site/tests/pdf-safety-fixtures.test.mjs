@@ -10,6 +10,14 @@ import { PDFDict, PDFDocument, PDFName, PDFStream } from "pdf-lib";
 
 const execFileAsync = promisify(execFile);
 
+test("fixture script URL paths preserve non-ASCII checkout directories", () => {
+  const fixtureUrl = new URL("./create-adversarial-pdf-fixtures.mjs", import.meta.url);
+  const fixturePath = fileURLToPath(fixtureUrl);
+
+  assert.ok(fixturePath.endsWith(path.join("tests", "create-adversarial-pdf-fixtures.mjs")));
+  assert.doesNotMatch(fixturePath, /%[0-9A-F]{2}/i);
+});
+
 test("synthetic adversarial PDFs cover every compression safety gate", async () => {
   const directory = await mkdtemp(
     path.join(os.tmpdir(), "xmum-pdf-safety-fixtures-"),
