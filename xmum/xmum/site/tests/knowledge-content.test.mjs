@@ -15,18 +15,18 @@ test("knowledge index is built from reviewed content with stable categories", ()
     "家长与校园",
     "校园生活",
   ]);
-  assert.equal(knowledgeEntries.length, 16);
-  assert.equal(new Set(knowledgeEntries.map((entry) => entry.id)).size, 16);
+  assert.equal(knowledgeEntries.length, 23);
+  assert.equal(new Set(knowledgeEntries.map((entry) => entry.id)).size, 23);
   assert.deepEqual(
     knowledgeCategories.slice(1).map((category) => [
       category,
       filterKnowledgeEntries(knowledgeEntries, { category }).length,
     ]),
     [
-      ["办理步骤", 5],
+      ["办理步骤", 9],
       ["材料与提交", 3],
       ["家长与校园", 4],
-      ["校园生活", 4],
+      ["校园生活", 7],
     ],
   );
 
@@ -59,6 +59,16 @@ test("knowledge search ignores whitespace and matches all searchable fields", ()
   assert.ok(
     filterKnowledgeEntries(knowledgeEntries, { query: "2025攻略记录" }).every(
       (entry) => entry.category === "校园生活",
+    ),
+  );
+  assert.ok(
+    filterKnowledgeEntries(knowledgeEntries, { query: "英语单科" }).some(
+      (entry) => entry.id === "pdf-admission-eligibility",
+    ),
+  );
+  assert.ok(
+    filterKnowledgeEntries(knowledgeEntries, { query: "CGPA" }).some(
+      (entry) => entry.id === "pdf-visa-renewal",
     ),
   );
 });

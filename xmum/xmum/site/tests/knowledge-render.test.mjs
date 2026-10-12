@@ -43,7 +43,9 @@ test("server-renders the local knowledge index and feedback boundary", async () 
   assert.match(html, /材料与提交/);
   assert.match(html, /家长与校园/);
   assert.match(html, /校园生活/);
-  assert.equal((html.match(/data-knowledge-entry=/g) ?? []).length, 16);
+  assert.equal((html.match(/data-knowledge-entry=/g) ?? []).length, 23);
+  assert.match(html, /英语单科.*120|120.*英语单科/);
+  assert.match(html, /CGPA.*2\.0|2\.0.*CGPA/);
   assert.match(html, /2026-09-17/);
   assert.match(html, /2026官方原文|需核验|参考/);
   assert.match(html, /本地反馈草稿/);
