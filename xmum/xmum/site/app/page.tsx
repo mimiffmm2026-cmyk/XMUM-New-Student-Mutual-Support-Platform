@@ -5,6 +5,7 @@ import HealthPdfCompressor from "./HealthPdfCompressor";
 import PassportPdfCompressor from "./PassportPdfCompressor";
 import DiningGuide from "./DiningGuide";
 import PackingGuide from "./PackingGuide";
+import KnowledgeIndex from "./KnowledgeIndex";
 import {
   campusLifeTopics,
   contactGroups,
@@ -430,6 +431,9 @@ export default function Home() {
             </ol>
           </aside>
         </div>
+        <a className="knowledge-entry-link" href="#knowledge" onClick={() => openDetails("knowledge")}>
+          按关键词查找资料 <span aria-hidden="true">↓</span>
+        </a>
       </section>
 
       <section className="trust-strip" aria-label="办理与隐私边界">
@@ -1043,6 +1047,7 @@ export default function Home() {
       </details>
 
       <DiningGuide />
+      <KnowledgeIndex />
         </div>
       </section>
 
