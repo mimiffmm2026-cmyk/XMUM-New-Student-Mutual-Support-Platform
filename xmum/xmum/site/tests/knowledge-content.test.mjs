@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
+import { faqs } from "../app/content.ts";
 import {
   filterKnowledgeEntries,
   knowledgeCategories,
@@ -87,4 +88,28 @@ test("knowledge filters compose without mutating the source list", () => {
     filterKnowledgeEntries(knowledgeEntries, { audience: "家长" }).length,
     4,
   );
+});
+
+test("user-provided admission and visa materials never claim official evidence", () => {
+  const userEntries = knowledgeEntries.filter((entry) => entry.id.startsWith("pdf-"));
+  assert.equal(userEntries.length, 7);
+
+  for (const entry of userEntries) {
+    assert.equal(entry.status, "用户材料");
+    assert.ok(entry.tags.includes("用户材料"));
+    assert.match(entry.source, /用户提供/);
+    assert.notEqual(entry.status, "2026官方原文");
+    assert.notEqual(entry.status, "公开来源交叉核对");
+  }
+});
+
+test("FAQ entries sourced from user-provided admissions PDFs remain review-only", () => {
+  const pdfFaqs = faqs.filter((faq) => /介绍册|招生手册/.test(faq.source ?? ""));
+  assert.ok(pdfFaqs.length > 0);
+
+  for (const faq of pdfFaqs) {
+    assert.notEqual(faq.status, "2026官方原文");
+    assert.notEqual(faq.status, "公开来源交叉核对");
+    assert.match(faq.source ?? "", /用户提供|用户材料/);
+  }
 });

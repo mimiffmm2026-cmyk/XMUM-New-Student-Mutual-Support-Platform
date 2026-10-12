@@ -25,6 +25,7 @@ const statusClass: Record<ContentStatus, string> = {
   "2026官方原文": "status-official-source",
   公开来源交叉核对: "status-crosschecked",
   当届确认: "status-current",
+  用户材料: "status-review",
 };
 
 const money = new Intl.NumberFormat("zh-CN");

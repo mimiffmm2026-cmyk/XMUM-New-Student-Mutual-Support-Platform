@@ -4,7 +4,8 @@ export type ContentStatus =
   | "以校方为准"
   | "2026官方原文"
   | "公开来源交叉核对"
-  | "当届确认";
+  | "当届确认"
+  | "用户材料";
 
 export type GuideStage = {
   number: string;
@@ -739,7 +740,7 @@ export const faqs: FaqItem[] = [
     category: "学业与未来",
     audience: "共同",
     status: "需核验",
-    source: "《厦大马校2026招生手册(1).pdf》p8；《厦门大学马来西亚分校介绍2605(1)(3).pdf》p40",
+    source: "《厦大马校2026招生手册(1).pdf》p8；《厦门大学马来西亚分校介绍2605(1)(3).pdf》p40（用户提供；原始 PDF 未随站点发布）",
     verifiedAt: "2026-10-12",
   },
   {
@@ -748,7 +749,7 @@ export const faqs: FaqItem[] = [
     category: "学业与未来",
     audience: "共同",
     status: "需核验",
-    source: "《厦大马校2026招生手册(1).pdf》p8；《厦门大学马来西亚分校介绍2605(1)(3).pdf》p40",
+    source: "《厦大马校2026招生手册(1).pdf》p8；《厦门大学马来西亚分校介绍2605(1)(3).pdf》p40（用户提供；原始 PDF 未随站点发布）",
     verifiedAt: "2026-10-12",
   },
   {
