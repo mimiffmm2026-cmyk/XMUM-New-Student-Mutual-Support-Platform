@@ -143,6 +143,22 @@ test("single-file export is self-contained and preserves the public release gate
   assert.match(html, /仅保存在本机浏览器/);
   assert.doesNotMatch(html, /\/images\/packing\//, "行李地图必须内嵌为数据 URI");
 
+  assert.match(html, /id="knowledge"/, "知识资料索引必须进入单文件版本");
+  assert.equal(
+    (html.match(/data-knowledge-entry=/g) ?? []).length,
+    29,
+    "单文件必须保留全部 29 条知识资料",
+  );
+  const studentCardStart = html.indexOf('data-knowledge-entry="student-card-replacement"');
+  assert.ok(studentCardStart >= 0, "离线单文件必须包含学生卡补办指南");
+  const studentCardHtml = html.slice(studentCardStart, html.indexOf("</details>", studentCardStart));
+  assert.match(studentCardHtml, /B1-109.*不是 A3 的 IT/);
+  assert.match(studentCardHtml, /不代表校方确认/);
+  assert.match(html, /name="knowledge-query"/);
+  assert.match(html, /2026-10-12/);
+  assert.match(html, /本地反馈草稿/);
+  assert.match(html, /不会自动提交/);
+
   assert.doesNotMatch(html, /<link\b[^>]*rel="(?:stylesheet|modulepreload)"/i);
   assert.doesNotMatch(html, /(?:href|src)=["']\/(?:assets\/|campus-students\.jpg)/i);
   assert.doesNotMatch(html, /url\(\s*["']?\/(?:assets\/|campus-students\.jpg)/i);

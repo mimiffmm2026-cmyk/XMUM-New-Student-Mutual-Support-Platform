@@ -9,39 +9,46 @@
     "dev": "vinext dev",
     "build": "vinext build",
     "export:single": "npm run build && node scripts/export-single-html.mjs",
-    "start": "vinext start",
-    "test": "npm run build && node --experimental-strip-types --test tests/rendered-html.test.mjs tests/release-readiness.test.mjs tests/dining-guide.test.mjs tests/packing-guide.test.mjs tests/accommodation-guide.test.mjs tests/download-hint.test.mjs tests/pdf-safety-fixtures.test.mjs tests/worker-image-route.test.mjs",
+    "start": "wrangler dev --local --config dist/server/wrangler.json",
+    "test": "npm run build && node --experimental-strip-types --test tests/rendered-html.test.mjs tests/release-readiness.test.mjs tests/dining-guide.test.mjs tests/packing-guide.test.mjs tests/accommodation-guide.test.mjs tests/download-hint.test.mjs tests/pdf-safety-fixtures.test.mjs tests/worker-image-route.test.mjs tests/knowledge-content.test.mjs tests/feedback-draft.test.mjs tests/knowledge-render.test.mjs tests/pdf-audit.test.mjs tests/dependency-versions.test.mjs tests/node-worker-runtime.test.mjs tests/browser-wrapper.test.mjs",
     "test:single-export": "npm run export:single && node --test tests/single-html-export.test.mjs",
     "test:single-browser": "node scripts/verify-single-browser.mjs && node scripts/verify-single-compression.mjs",
     "export:packing": "node --experimental-strip-types scripts/export-packing-html.mjs",
     "verify:packing-standalone": "node scripts/verify-packing-standalone.mjs",
-    "lint": "eslint . --ignore-pattern dist --ignore-pattern .next"
+    "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
+    "test:worker": "node --experimental-strip-types scripts/verify-built-worker.mjs"
   },
   "dependencies": {
-    "next": "16.3.8",
+    "next": "16.4.3",
     "pdf-lib": "^1.17.1",
     "pdfjs-dist": "^5.4.624",
     "react": "19.2.8",
     "react-dom": "19.2.8"
   },
   "devDependencies": {
-    "@cloudflare/vite-plugin": "1.37.1",
+    "@cloudflare/vite-plugin": "1.66.0",
     "@napi-rs/canvas": "0.1.100",
     "@tailwindcss/postcss": "4.2.1",
     "@types/node": "22.19.19",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "@vitejs/plugin-react": "6.0.2",
-    "@vitejs/plugin-rsc": "0.5.26",
+    "@vitejs/plugin-rsc": "0.5.34",
     "axe-core": "4.11.4",
     "eslint": "9.39.4",
-    "eslint-config-next": "16.3.8",
+    "eslint-config-next": "16.4.3",
     "react-server-dom-webpack": "19.2.8",
     "tailwindcss": "4.2.1",
     "typescript": "5.9.3",
-    "vinext": "0.0.50",
-    "vite": "8.0.16",
-    "wrangler": "4.92.0"
+    "vinext": "1.0.1",
+    "vite": "8.1.6",
+    "wrangler": "4.154.0"
   },
-  "type": "module"
+  "type": "module",
+  "overrides": {
+    "sharp": "0.35.5",
+    "source-map-js": "1.2.2",
+    "fflate": "0.7.5",
+    "minimatch": "11.0.1"
+  }
 }

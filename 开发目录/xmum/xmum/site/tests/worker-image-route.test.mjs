@@ -1,3 +1,4 @@
+import { loadBuiltWorker } from "../build/node-worker-runtime.mjs";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
@@ -5,10 +6,16 @@ import test from "node:test";
 const imagePath = new URL("../public/images/xmum-campus-map.jpg", import.meta.url);
 const imageBytes = await readFile(imagePath);
 
+test("built Worker declares the ASSETS binding used by image fallback", async () => {
+  const config = JSON.parse(await readFile(new URL("../dist/server/wrangler.json", import.meta.url), "utf8"));
+  assert.equal(config.assets?.binding, "ASSETS");
+  assert.equal(config.compatibility_date, "2026-05-15");
+});
+
 async function loadWorker() {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
   workerUrl.searchParams.set("image-route-test", `${process.pid}-${Date.now()}-${Math.random()}`);
-  const { default: worker } = await import(workerUrl.href);
+  const { default: worker } = await loadBuiltWorker(workerUrl);
   return worker;
 }
 

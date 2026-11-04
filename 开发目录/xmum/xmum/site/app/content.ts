@@ -4,7 +4,8 @@ export type ContentStatus =
   | "以校方为准"
   | "2026官方原文"
   | "公开来源交叉核对"
-  | "当届确认";
+  | "当届确认"
+  | "用户材料";
 
 export type GuideStage = {
   number: string;
@@ -759,17 +760,21 @@ export const faqs: FaqItem[] = [
   },
   {
     question: "入学后可以立即转专业吗？",
-    answer: "现有2026入学须知未明确转专业的开放时间、申请条件和办理流程。请向马校教务部门及目标专业所在院系确认，并以当年正式通知为准。",
+    answer: "2026介绍册写明，开始学位课程前以及开始学位课程的第1学期内不得申请转专业；开始学位课程1学期后，达到转入专业英语要求并符合综合成绩和转专业规定，可申请同大类转专业（商科大类除外）。具体规则每年可能调整，申请前必须查看当年教务部门通知。",
     category: "学业与未来",
     audience: "共同",
     status: "需核验",
+    source: "《厦大马校2026招生手册(1).pdf》p8；《厦门大学马来西亚分校介绍2605(1)(3).pdf》p40（用户提供；原始 PDF 未随站点发布）",
+    verifiedAt: "2026-10-12",
   },
   {
     question: "在校期间可以转几次专业？",
-    answer: "现有2026入学须知未明确在校期间可申请转专业的次数。请向马校教务部门确认当年规则，不要依据往届截图安排学业。",
+    answer: "2026介绍册FAQ写明，本科期间仅能转换一次专业；开始学位课程1年后，达到转入专业英语要求并符合学校规定，可申请跨大类转专业。具体规定每年可能变化，不能依据往届规则替代当年教务通知。",
     category: "学业与未来",
     audience: "共同",
     status: "需核验",
+    source: "《厦大马校2026招生手册(1).pdf》p8；《厦门大学马来西亚分校介绍2605(1)(3).pdf》p40（用户提供；原始 PDF 未随站点发布）",
+    verifiedAt: "2026-10-12",
   },
   {
     question: "可以修双学位吗？",
@@ -841,8 +846,9 @@ export const faqs: FaqItem[] = [
     answer: "在马来西亚生病时，先到校内诊所或按学校当期安排就医；只有在本人当前记录确认通过 EMGS 选择 Etiqa 且已付款或建立承保关系后，才按对应保险资料办理。具体就诊、保险范围、报销额度和校外医院安排仍需查看本人当前保单、EMGS 门户和学校最新通知。",
     category: "健康与安全",
     audience: "共同",
-    status: "2026官方原文",
-    source: officialSource,
+    status: "需核验",
+    source: `${officialSource}；EMGS《Insurance - New》、EMGS/Etiqa《Schedule of Benefits》与 Etiqa 官方指南交叉整理。具体以本人当前保单、EMGS 门户和学校最新通知为准。`,
+    verifiedAt: insuranceReviewedAt,
   },
   {
     question: "既往疾病会影响入学或签证吗？",

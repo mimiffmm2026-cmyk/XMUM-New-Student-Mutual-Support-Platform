@@ -1,3 +1,4 @@
+import { loadBuiltWorker } from "../build/node-worker-runtime.mjs";
 import { readFile, readdir, rm, mkdir, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -165,7 +166,7 @@ async function renderProductionHtml() {
   await requireFile(serverEntry, "生产服务端入口");
   const entryDetails = await stat(serverEntry);
   const moduleUrl = `${pathToFileURL(serverEntry).href}?mtime=${entryDetails.mtimeMs}`;
-  const workerModule = await import(moduleUrl);
+  const workerModule = await loadBuiltWorker(moduleUrl);
 
   if (typeof workerModule.default?.fetch !== "function") {
     fail(`生产服务端入口没有可调用的 fetch()：${serverEntry}`);

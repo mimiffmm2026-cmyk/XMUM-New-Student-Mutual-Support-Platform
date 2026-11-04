@@ -31,6 +31,8 @@ npm run build
 - 食堂攻略：6个区域、38家商户的营业时间、休息日与特别停业（采集于2026.09，可能已变化），支持区域/状态/种类筛选与餐饮地图查看；来源与授权无法确认的商户照片已移除，餐饮地图为本站整理的位置示意
 - 行李准备：67 项物品清单（按携带策略分组，支持视角/策略/分类筛选与本机勾选进度，所选视角会记住）、携带判断四问法、6 档采购地点整理与校内两处超市位置示意（校园导览图，标注 Uhub B1 B03 与 MyNews D6 G01）、海关/航空/宿舍三层合规速查与首晚床品提示；经验内容整理自公开攻略与家长整理资料并点名署名，动态信息标注“整理于 2026.09，可能已变化”，不提供外链
 - 新生与家长双视角说明
+- 知识资料索引：按关键词、分类和适用人群查找办理步骤、材料、家长住宿候选、保险专题及用户提供 PDF 的筛选整理；新生、家长筛选包含共同适用资料，住宿条目与专题同步显示超过 30 天的重新核对提示；住宿和保险保留各自的核对日期与使用边界，用户提供材料保留来源页码，不冒称校方官方原文
+- 本地反馈草稿：只在浏览器内生成和复制纠错/补充文字，不自动提交、不保存到服务器；本轮 PDF 反向审计记录见 [2026 招生资料审计](docs/2026-admissions-pdf-audit.md)
 - 已从公开页面移除问答模块；问答源数据仅保留在源码中，待逐条复核后再决定是否恢复
 - 对政策、费用、日期等动态信息进行核验标记
 - 学校迎新系统和官网域名的纯文本核对提示（不提供网页跳转）
@@ -38,10 +40,18 @@ npm run build
 ## 验证
 
 ```bash
+npm audit
 npm test
+npm run test:worker
 npm run lint
 npm run test:single-export
 ```
+
+`test:worker` 通过 Wrangler 的 `--local` 模式加载构建产物，使用临时本机端口检查首页、知识索引、真实 ASSETS 图片回退及 400/404 边界，不访问生产服务。CI 同时审计开发与生产依赖。
+
+构建后运行 `npm start` 可启动同一 Worker 产物的本地预览（默认端口 8787）；需要其他地址时使用 `npm start -- --port 3000 --ip 127.0.0.1`。该命令不部署站点。
+
+Node 端渲染测试与单文件导出通过 `build/node-worker-runtime.mjs` 加载 Worker：仅将可选的 Cloudflare 追踪视为不可用，读取真实绑定会立即报错。部署构建保留原生 Worker 入口；`vite.config.ts` 显式声明 ASSETS，并固定兼容日期，避免依赖升级隐式改变运行时默认行为。
 
 真实浏览器回归需要 Python Playwright、Poppler 和独立的 Chromium。安装依赖后，统一使用
 wrapper 启动临时 CDP 浏览器、开发服务器和合成夹具：
@@ -52,14 +62,25 @@ python3 -m pip install -r tests/requirements-browser.txt
 python3 -m playwright install chromium
 # Ubuntu runner 可改用：python3 -m playwright install --with-deps chromium
 # macOS 可用 Homebrew 安装 Poppler：brew install poppler
+npm run test:single-export
 bash scripts/ci-browser-regressions.sh
 ```
 
 wrapper 使用默认 CDP 端口 `9344`，启动 Chromium 时使用独立 profile 和
 `--disable-background-timer-throttling --disable-backgrounding-occluded-windows
 --disable-renderer-backgrounding`，每个 Python 回归前都会重启浏览器；失败时的日志、
-截图和成品 PDF 保存在 `$RUNNER_TEMP/browser-artifacts`（本地可通过
-`BROWSER_ARTIFACT_DIR` 指定）。它依次执行四组回归：
+截图和成品 PDF 保存在 `$RUNNER_TEMP/browser-artifacts/<本次运行目录>`（本地可通过
+`BROWSER_ARTIFACT_DIR` 指定）；并发或连续运行会分别写入各自的子目录。
+
+端口已占用时脚本会失败，可通过 `CDP_URL` 和 `BROWSER_DEV_URL` 指定其他本机端口后重跑。
+脚本会核对本次启动的浏览器实例和开发服务器，开发服务器不会自动改用其他端口。
+启动诊断日志独立保存，退出后复制到本次运行子目录的 `startup/` 下。
+
+夹具和浏览器 profile 使用每次运行独立创建的临时目录，结束或启动失败时只清理本次目录。
+可通过 `BROWSER_FIXTURE_DIR` 指定临时目录的父目录；其中已有文件不会被清理，日志与截图仍保留在产物目录。
+`BROWSER_ARTIFACT_DIR` 与 `BROWSER_FIXTURE_DIR` 必须指向不同目录。
+
+它依次执行四组回归：
 
 - `verify-single-browser.mjs` 和 `verify-single-compression.mjs`：验证页面结构、筛选、图片查看器、
 键盘与触控目标、横向溢出、axe 无障碍与零外部请求；`verify-single-compression.mjs`

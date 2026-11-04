@@ -1,3 +1,4 @@
+import { loadBuiltWorker } from "../build/node-worker-runtime.mjs";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
@@ -5,7 +6,7 @@ import test from "node:test";
 async function render() {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
   workerUrl.searchParams.set("release-test", `${process.pid}-${Date.now()}`);
-  const { default: worker } = await import(workerUrl.href);
+  const { default: worker } = await loadBuiltWorker(workerUrl);
 
   return worker.fetch(
     new Request("http://localhost/", {
@@ -155,6 +156,28 @@ test("public release is explicitly non-official, indexable, and has no web jump"
   assert.ok(
     count(visibleText, /非学校官网/g) <= 2,
     "“非学校官网”在可见正文中最多出现 2 次，避免重复免责声明",
+  );
+});
+
+test("hash targets inside collapsed disclosures open their ancestor details", async () => {
+  const page = await readFile(new URL("../app/page.tsx", import.meta.url), "utf8");
+
+  assert.match(
+    page,
+    /function openDetails\(id: string\)\s*\{[\s\S]*?let details = element instanceof HTMLDetailsElement \? element : element\.closest\("details"\);[\s\S]*?while \(details\)[\s\S]*?details\.open = true;/,
+    "哈希定位到折叠父级内的条目时，必须沿祖先 details 展开",
+  );
+  assert.match(page, /id=\{`guide-stage-\$\{stage\.number\}`\}/);
+  assert.match(page, /<details className="timeline-disclosure" id="timeline">/);
+});
+
+test("repeated quick-progress links reopen a manually collapsed stage", async () => {
+  const page = await readFile(new URL("../app/page.tsx", import.meta.url), "utf8");
+
+  assert.match(
+    page,
+    /<a\s+href=\{selectedProgress\.href\}[\s\S]*?onClick=\{\(\) => openDetails\(selectedProgress\.href\.slice\(1\)\)\}[\s\S]*?>\s*去查看/,
+    "同一 hash 再次点击快速进度入口时，必须直接重新展开目标阶段",
   );
 });
 

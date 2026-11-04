@@ -6,6 +6,7 @@ import PassportPdfCompressor from "./PassportPdfCompressor";
 import DiningGuide from "./DiningGuide";
 import PackingGuide from "./PackingGuide";
 import AccommodationGuide from "./AccommodationGuide";
+import KnowledgeIndex from "./KnowledgeIndex";
 import { accommodationUpdatedAt } from "./accommodation-content";
 import {
   campusLifeTopics,
@@ -27,6 +28,7 @@ const statusClass: Record<ContentStatus, string> = {
   "2026官方原文": "status-official-source",
   公开来源交叉核对: "status-crosschecked",
   当届确认: "status-current",
+  用户材料: "status-review",
 };
 
 const money = new Intl.NumberFormat("zh-CN");
@@ -189,8 +191,14 @@ function toggleDetailsWithKeyboard(event: KeyboardEvent<HTMLElement>) {
 
 function openDetails(id: string) {
   const element = document.getElementById(id);
-  if (element instanceof HTMLDetailsElement) {
-    element.open = true;
+  if (!element) {
+    return;
+  }
+
+  let details = element instanceof HTMLDetailsElement ? element : element.closest("details");
+  while (details) {
+    details.open = true;
+    details = details.parentElement?.closest("details") ?? null;
   }
 }
 
@@ -237,10 +245,43 @@ export default function Home() {
     progressOptions.find((option) => option.id === progress) ?? progressOptions[0];
 
   useEffect(() => {
-    const timer = window.setTimeout(() => {
-      setCurrentUtc8Day(getUtc8DayNumber(new Date()));
-    }, 0);
-    return () => window.clearTimeout(timer);
+    let timer = 0;
+    const refreshCurrentDay = () => {
+      window.clearTimeout(timer);
+      const now = new Date();
+      const day = getUtc8DayNumber(now);
+      setCurrentUtc8Day(day);
+      timer = window.setTimeout(
+        refreshCurrentDay,
+        (day + 1) * DAY_IN_MS - UTC_8_OFFSET_IN_MS - now.getTime(),
+      );
+    };
+
+    timer = window.setTimeout(refreshCurrentDay, 0);
+    // Sleeping/background tabs can defer midnight timers; refresh on return too.
+    document.addEventListener("visibilitychange", refreshCurrentDay);
+    window.addEventListener("focus", refreshCurrentDay);
+    return () => {
+      window.clearTimeout(timer);
+      document.removeEventListener("visibilitychange", refreshCurrentDay);
+      window.removeEventListener("focus", refreshCurrentDay);
+    };
+  }, []);
+
+  useEffect(() => {
+    const revealHashSection = () => {
+      let id: string;
+      try {
+        id = decodeURIComponent(window.location.hash.slice(1));
+      } catch {
+        return;
+      }
+      openDetails(id);
+    };
+
+    revealHashSection();
+    window.addEventListener("hashchange", revealHashSection);
+    return () => window.removeEventListener("hashchange", revealHashSection);
   }, []);
 
   useEffect(() => {
@@ -435,6 +476,9 @@ export default function Home() {
             </ol>
           </aside>
         </div>
+        <a className="knowledge-entry-link" href="#knowledge" onClick={() => openDetails("knowledge")}>
+          按关键词查找资料 <span aria-hidden="true">↓</span>
+        </a>
       </section>
 
       <section className="trust-strip" aria-label="办理与隐私边界">
@@ -482,7 +526,12 @@ export default function Home() {
               <p>{selectedProgress.detail}</p>
               <small>{selectedProgress.completion}</small>
             </div>
-            <a href={selectedProgress.href}>去查看 <span aria-hidden="true">↓</span></a>
+            <a
+              href={selectedProgress.href}
+              onClick={() => openDetails(selectedProgress.href.slice(1))}
+            >
+              去查看 <span aria-hidden="true">↓</span>
+            </a>
           </div>
         </div>
       </section>
@@ -1050,6 +1099,7 @@ export default function Home() {
       </details>
 
       <DiningGuide />
+      <KnowledgeIndex currentUtc8Day={currentUtc8Day} />
         </div>
       </section>
 

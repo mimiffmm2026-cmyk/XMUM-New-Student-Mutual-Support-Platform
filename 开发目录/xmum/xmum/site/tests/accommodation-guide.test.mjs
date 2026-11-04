@@ -1,3 +1,4 @@
+import { loadBuiltWorker } from "../build/node-worker-runtime.mjs";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
@@ -14,7 +15,7 @@ import {
 async function render() {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
   workerUrl.searchParams.set("accommodation-test", `${process.pid}-${Date.now()}`);
-  const { default: worker } = await import(workerUrl.href);
+  const { default: worker } = await loadBuiltWorker(workerUrl);
 
   return worker.fetch(
     new Request("http://localhost/", {
